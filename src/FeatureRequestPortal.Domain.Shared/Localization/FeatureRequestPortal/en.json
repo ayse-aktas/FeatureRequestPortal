@@ -4,6 +4,18 @@
     "AppName": "FeatureRequestPortal",
     "Menu:Home": "Home",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
-    "Welcome": "Welcome"
+    "Welcome": "Welcome",
+    "FeatureRequests": "Feature Requests",
+    "NewFeatureRequest": "New Feature Request",
+    "Status": "Status",
+    "All": "All",
+    "VoteCount": "Votes",
+    "Title": "Title",
+    "Details": "Details",
+    "Create": "Create",
+    "Cancel": "Cancel",
+    "Description": "Description",
+    "EnterTitle": "Enter title...",
+    "EnterDescription": "Enter description..."
   }
 }

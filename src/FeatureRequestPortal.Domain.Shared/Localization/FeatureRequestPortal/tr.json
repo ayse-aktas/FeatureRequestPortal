@@ -37,6 +37,18 @@
     "Unspecified": "Sistem",
     "SeeAllUsers": "Tüm Kullanıcıları Gör",
     "TakePhoto": "Fotoğraf Çek",
-    "ChoosePhoto": "Fotoğraf Seç"
+    "ChoosePhoto": "Fotoğraf Seç",
+    "FeatureRequests": "Özellik Talepleri",
+    "NewFeatureRequest": "Yeni Özellik Talebi",
+    "Status": "Durum",
+    "All": "Hepsi",
+    "VoteCount": "Oy Sayısı",
+    "Title": "Başlık",
+    "Details": "Detaylar",
+    "Create": "Oluştur",
+    "Cancel": "İptal",
+    "Description": "Açıklama",
+    "EnterTitle": "Başlık giriniz...",
+    "EnterDescription": "Açıklama giriniz..."
   }
 }

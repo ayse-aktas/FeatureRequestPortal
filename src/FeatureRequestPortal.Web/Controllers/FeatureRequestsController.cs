@@ -32,4 +32,23 @@ public class FeatureRequestsController : AbpController
 
         return View(result.Items);
     }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CreateFeatureRequestDto input)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(input);
+        }
+
+        await _featureRequestAppService.CreateAsync(input);
+        return RedirectToAction("Index");
+    }
 }
