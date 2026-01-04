@@ -1,0 +1,114 @@
+@using FeatureRequestPortal.FeatureRequests
+@using FeatureRequestPortal.Localization
+@using Microsoft.Extensions.Localization
+@model FeatureRequestDto
+@inject IStringLocalizer<FeatureRequestPortalResource> L
+@{
+    ViewBag.PageTitle = Model.Title;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h1 class="card-title">@Model.Title</h1>
+                        <span class="badge bg-info p-2">@Model.Status</span>
+                    </div>
+                    <p class="card-text lead">@Model.Description</p>
+                    <hr />
+                    <div class="d-flex align-items-center">
+                        <span class="h4 mb-0 me-3">@Model.VoteCount @L["Votes"]</span>
+                        <form asp-action="Vote" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-arrow-up"></i> @L["VoteNow"]
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                @if (User.Identity.IsAuthenticated) @* In a real app, check for Admin role here *@
+                {
+                    <div class="card-footer bg-light border-top">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <form asp-action="UpdateStatus" method="post" class="row g-2 align-items-center">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <div class="col-auto">
+                                    <label class="form-label mb-0">@L["ChangeStatus"]:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        @foreach (var status in Enum.GetValues<FeatureRequestStatus>())
+                                        {
+                                            <option value="@status" selected="@(Model.Status == status)">@status</option>
+                                        }
+                                    </select>
+                                </div>
+                            </form>
+                            <form asp-action="Delete" method="post" onsubmit="return confirm('@L["AreYouSureToDelete"]');">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger">@L["Delete"]</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h3 class="card-title mb-0">@L["Comments"]</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush mb-4">
+                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreationTime))
+                        {
+                            <li class="list-group-item px-0">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <h6 class="mb-0 text-primary">@comment.CreatorName</h6>
+                                    <small class="text-muted">@comment.CreationTime.ToString("yyyy-MM-dd HH:mm")</small>
+                                </div>
+                                <p class="mb-0">@comment.Text</p>
+                            </li>
+                        }
+                        @if (!Model.Comments.Any())
+                        {
+                            <li class="list-group-item px-0 text-muted">@L["NoCommentsYet"]</li>
+                        }
+                    </ul>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="AddComment" method="post">
+                            <input type="hidden" name="FeatureRequestId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <textarea name="Text" class="form-control" rows="3" placeholder="@L["WriteCommentPlaceholder"]" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">@L["PostComment"]</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            @L["LoginToCommentAndVote"]
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@L["MetaInformation"]</h5>
+                    <p class="small text-muted mb-1">@L["CreatedBy"]: @Model.CreatorId</p>
+                    <p class="small text-muted mb-0">@L["CreatedAt"]: @Model.CreationTime.ToShortDateString()</p>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" class="btn btn-block btn-secondary w-100">@L["BackToList"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

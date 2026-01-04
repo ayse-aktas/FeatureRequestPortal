@@ -51,4 +51,56 @@ public class FeatureRequestsController : AbpController
         await _featureRequestAppService.CreateAsync(input);
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Detail(Guid id)
+    {
+        var featureRequest = await _featureRequestAppService.GetAsync(id);
+        return View(featureRequest);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Vote(Guid id)
+    {
+        try
+        {
+            await _featureRequestAppService.VoteAsync(id);
+            return RedirectToAction("Detail", new { id });
+        }
+        catch (Volo.Abp.UserFriendlyException ex)
+        {
+            Alerts.Warning(ex.Message);
+            return RedirectToAction("Detail", new { id });
+        }
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> AddComment(CreateCommentDto input)
+    {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction("Detail", new { id = input.FeatureRequestId });
+        }
+
+        await _featureRequestAppService.CreateCommentAsync(input);
+        return RedirectToAction("Detail", new { id = input.FeatureRequestId });
+    }
+
+    [HttpPost]
+    [Authorize] // Admin check would be here
+    public async Task<IActionResult> UpdateStatus(Guid id, FeatureRequestStatus status)
+    {
+        await _featureRequestAppService.UpdateAsync(id, new UpdateFeatureRequestDto { Status = status });
+        return RedirectToAction("Detail", new { id });
+    }
+
+    [HttpPost]
+    [Authorize] // Admin check
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _featureRequestAppService.DeleteAsync(id);
+        return RedirectToAction("Index");
+    }
 }
