@@ -25,13 +25,26 @@
                     <p class="card-text lead">@Model.Description</p>
                     <hr />
                     <div class="d-flex align-items-center">
-                        <span class="h4 mb-0 me-3">@Model.VoteCount @L["Votes"]</span>
-                        <form asp-action="Vote" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="btn btn-outline-primary btn-lg">
-                                <i class="fas fa-arrow-up"></i> @L["VoteNow"]
-                            </button>
-                        </form>
+                        <div class="d-flex flex-column align-items-center me-4">
+                            <form asp-action="Vote" method="post" class="mb-1">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="value" value="1" />
+                                <button type="submit" class="btn btn-sm @(Model.CurrentUserVote == 1 ? "btn-primary" : "btn-outline-primary")">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                            </form>
+                            
+                            <span class="h4 mb-1">@Model.VoteCount</span>
+                            
+                            <form asp-action="Vote" method="post">
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="value" value="-1" />
+                                <button type="submit" class="btn btn-sm @(Model.CurrentUserVote == -1 ? "btn-danger" : "btn-outline-danger")">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <span class="text-muted h6 mb-0">@L["FeedbackScore"]</span>
                     </div>
                 </div>
 

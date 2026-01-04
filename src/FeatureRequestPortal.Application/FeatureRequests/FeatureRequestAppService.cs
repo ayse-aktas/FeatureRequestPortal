@@ -49,6 +49,13 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
                 comment.CreatorName = user?.UserName ?? "Unknown";
             }
         }
+        
+        // Fill current user vote
+        if (CurrentUser.IsAuthenticated)
+        {
+            var userVote = await _voteRepository.FirstOrDefaultAsync(x => x.FeatureRequestId == id && x.CreatorId == CurrentUser.Id);
+            dto.CurrentUserVote = userVote?.Value ?? 0;
+        }
 
         return dto;
     }
@@ -116,23 +123,40 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
     }
 
     [Authorize]
-    public async Task VoteAsync(Guid id)
+    public async Task VoteAsync(Guid id, int value)
     {
-        var userId = CurrentUser.Id.GetValueOrDefault();
-        
-        // Check if user already voted
-        var existingVote = await _voteRepository.FirstOrDefaultAsync(x => x.FeatureRequestId == id && x.CreatorId == userId);
-        if (existingVote != null)
-        {
-            throw new Volo.Abp.UserFriendlyException("You have already voted for this feature request.");
-        }
+        if (value != 1 && value != -1) throw new ArgumentException("Value must be 1 or -1");
 
+        var userId = CurrentUser.Id.GetValueOrDefault();
         var featureRequest = await _featureRequestRepository.GetAsync(id);
         
-        var vote = new Vote(GuidGenerator.Create(), id);
-        await _voteRepository.InsertAsync(vote);
+        var existingVote = await _voteRepository.FirstOrDefaultAsync(x => x.FeatureRequestId == id && x.CreatorId == userId);
+        
+        if (existingVote != null)
+        {
+            if (existingVote.Value == value)
+            {
+                // Toggle off: Remove vote
+                featureRequest.VoteCount -= existingVote.Value;
+                await _voteRepository.DeleteAsync(existingVote);
+            }
+            else
+            {
+                // Change vote: e.g. from +1 to -1
+                featureRequest.VoteCount -= existingVote.Value; // Remove old
+                existingVote.Value = value;
+                featureRequest.VoteCount += existingVote.Value; // Add new
+                await _voteRepository.UpdateAsync(existingVote);
+            }
+        }
+        else
+        {
+            // New vote
+            var vote = new Vote(GuidGenerator.Create(), id, value);
+            await _voteRepository.InsertAsync(vote);
+            featureRequest.VoteCount += value;
+        }
 
-        featureRequest.VoteCount++;
         await _featureRequestRepository.UpdateAsync(featureRequest);
     }
 

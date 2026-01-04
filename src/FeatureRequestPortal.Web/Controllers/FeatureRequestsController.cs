@@ -71,9 +71,9 @@ public class FeatureRequestsController : AbpController
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Vote(Guid id)
+    public async Task<IActionResult> Vote(Guid id, int value)
     {
-        await _featureRequestAppService.VoteAsync(id);
+        await _featureRequestAppService.VoteAsync(id, value);
         return RedirectToAction("Detail", new { id });
     }
 

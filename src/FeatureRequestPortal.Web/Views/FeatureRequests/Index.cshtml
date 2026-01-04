@@ -55,7 +55,7 @@
                 <th>@L["Categories"]</th>
                 <th class="text-center">
                     <a asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-categoryId="@ViewBag.CategoryId" asp-route-sorting="@(ViewBag.Sorting == "VoteCount desc" ? "VoteCount asc" : "VoteCount desc")">
-                        @L["VoteCount"]
+                        @L["FeedbackScore"]
                         @if (ViewBag.Sorting == "VoteCount desc")
                         {
                             <i class="fas fa-sort-down"></i>

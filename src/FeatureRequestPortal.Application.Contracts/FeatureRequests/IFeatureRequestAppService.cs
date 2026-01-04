@@ -19,7 +19,7 @@ public interface IFeatureRequestAppService : IApplicationService
 
     Task DeleteAsync(Guid id);
 
-    Task VoteAsync(Guid id);
+    Task VoteAsync(Guid id, int value);
 
     Task<CommentDto> CreateCommentAsync(CreateCommentDto input);
 
