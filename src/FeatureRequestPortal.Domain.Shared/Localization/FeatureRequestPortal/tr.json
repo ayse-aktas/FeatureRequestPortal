@@ -11,6 +11,8 @@
     "Date": "Tarih",
     "Permission:Dashboard": "Genel görünüm",
     "Menu:Dashboard": "Genel görünüm",
+    "Permission:FeatureRequests": "Özellik Talebi Yönetimi",
+    "Permission:FeatureRequestsManagement": "Durum Değiştirme ve Silme",
     "Menu:HomePage": "ana sayfa",
     "Dashboard": "Genel görünüm",
     "ExternalProvider:Google": "Google",

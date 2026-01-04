@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
+using FeatureRequestPortal.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -106,7 +107,7 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
         return ObjectMapper.Map<FeatureRequest, FeatureRequestDto>(featureRequest);
     }
 
-    [Authorize] // Admin check should be added via permission system in real world
+    [Authorize(FeatureRequestPortalPermissions.FeatureRequests.Manage)]
     public async Task<FeatureRequestDto> UpdateAsync(Guid id, UpdateFeatureRequestDto input)
     {
         var featureRequest = await _featureRequestRepository.GetAsync(id);
@@ -117,7 +118,7 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
         return ObjectMapper.Map<FeatureRequest, FeatureRequestDto>(featureRequest);
     }
 
-    [Authorize] // Admin check
+    [Authorize(FeatureRequestPortalPermissions.FeatureRequests.Manage)]
     public async Task DeleteAsync(Guid id)
     {
         await _featureRequestRepository.DeleteAsync(id);

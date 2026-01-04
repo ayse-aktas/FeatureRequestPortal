@@ -3,6 +3,8 @@
 @using Microsoft.Extensions.Localization
 @model FeatureRequestDto
 @inject IStringLocalizer<FeatureRequestPortalResource> L
+@inject Volo.Abp.Authorization.Permissions.IPermissionChecker PermissionChecker
+@using FeatureRequestPortal.Permissions
 @{
     ViewBag.PageTitle = Model.Title;
 }
@@ -48,7 +50,7 @@
                     </div>
                 </div>
 
-                @if (User.Identity.IsAuthenticated) @* In a real app, check for Admin role here *@
+                @if (await PermissionChecker.IsGrantedAsync(FeatureRequestPortalPermissions.FeatureRequests.Manage))
                 {
                     <div class="card-footer bg-light border-top">
                         <div class="d-flex justify-content-between align-items-center">

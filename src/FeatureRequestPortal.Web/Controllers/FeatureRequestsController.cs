@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using FeatureRequestPortal.FeatureRequests;
+using FeatureRequestPortal.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
@@ -91,7 +92,7 @@ public class FeatureRequestsController : AbpController
     }
 
     [HttpPost]
-    [Authorize] // Admin check would be here
+    [Authorize(FeatureRequestPortalPermissions.FeatureRequests.Manage)]
     public async Task<IActionResult> UpdateStatus(Guid id, FeatureRequestStatus status)
     {
         await _featureRequestAppService.UpdateAsync(id, new UpdateFeatureRequestDto { Status = status });
@@ -99,7 +100,7 @@ public class FeatureRequestsController : AbpController
     }
 
     [HttpPost]
-    [Authorize] // Admin check
+    [Authorize(FeatureRequestPortalPermissions.FeatureRequests.Manage)]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _featureRequestAppService.DeleteAsync(id);
