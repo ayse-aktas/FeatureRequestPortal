@@ -30,6 +30,7 @@ public class FeatureRequestPortalDbContext :
     public DbSet<FeatureRequest> FeatureRequests { get; set; }
     public DbSet<Vote> Votes { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Category> Categories { get; set; }
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
 
@@ -90,13 +91,16 @@ public class FeatureRequestPortalDbContext :
         {
             b.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "FeatureRequests", FeatureRequestPortalConsts.DbSchema);
             b.ConfigureByConvention(); 
-            b.Property(x => x.Title).IsRequired().HasMaxLength(200);
-            b.Property(x => x.Description).IsRequired().HasMaxLength(2000);
-            b.Property(x => x.Status).IsRequired().HasDefaultValue(FeatureRequestStatus.Pending);
-            b.Property(x => x.VoteCount).IsRequired().HasDefaultValue(0);
+            b.Property(x => x.Title).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Description).IsRequired();
 
             b.HasMany(x => x.Votes).WithOne().HasForeignKey(x => x.FeatureRequestId).IsRequired();
             b.HasMany(x => x.Comments).WithOne().HasForeignKey(x => x.FeatureRequestId).IsRequired();
+            
+            // Many-to-many mapping
+            b.HasMany(x => x.Categories)
+             .WithMany()
+             .UsingEntity(j => j.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "FeatureRequestCategories"));
         });
 
         builder.Entity<Vote>(b =>

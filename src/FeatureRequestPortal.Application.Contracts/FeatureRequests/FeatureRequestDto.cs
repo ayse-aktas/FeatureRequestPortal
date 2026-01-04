@@ -11,4 +11,5 @@ public class FeatureRequestDto : FullAuditedEntityDto<Guid>
     public FeatureRequestStatus Status { get; set; }
     public int VoteCount { get; set; }
     public List<CommentDto> Comments { get; set; }
+    public List<string> CategoryNames { get; set; }
 }

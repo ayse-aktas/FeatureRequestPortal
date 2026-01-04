@@ -1,3 +1,4 @@
+using System;
 using Volo.Abp.Application.Dtos;
 
 namespace FeatureRequestPortal.FeatureRequests;
@@ -5,4 +6,5 @@ namespace FeatureRequestPortal.FeatureRequests;
 public class FeatureRequestGetListInput : PagedAndSortedResultRequestDto
 {
     public FeatureRequestStatus? Status { get; set; }
+    public Guid? CategoryId { get; set; }
 }

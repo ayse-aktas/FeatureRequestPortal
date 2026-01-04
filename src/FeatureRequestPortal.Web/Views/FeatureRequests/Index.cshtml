@@ -10,19 +10,36 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>@L["FeatureRequests"]</h1>
-        <a asp-action="Create" class="btn btn-primary">@L["NewFeatureRequest"]</a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-action="Create" class="btn btn-primary">@L["NewFeatureRequest"]</a>
+        }
+        else
+        {
+            <div class="alert alert-info mb-0 py-2">
+                <i class="fas fa-info-circle me-1"></i> @L["LoginToCreateRequest"]
+            </div>
+        }
     </div>
 
     <div class="card mb-4">
         <div class="card-body">
-            <form method="get" class="row g-3 align-items-center">
+            <form method="get" class="row g-2 align-items-center">
                 <div class="col-auto">
-                    <label class="form-label">@L["Status"]</label>
                     <select name="status" class="form-select" onchange="this.form.submit()">
-                        <option value="">@L["All"]</option>
+                        <option value="">@L["All"] @L["Status"]</option>
                         @foreach (var status in Enum.GetValues<FeatureRequestStatus>())
                         {
-                            <option value="@status" selected="@(ViewBag.Status == status)">@status</option>
+                            <option value="@status" selected="@(ViewBag.Status?.ToString() == status.ToString())">@status</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <select name="categoryId" class="form-select" onchange="this.form.submit()">
+                        <option value="">@L["AllCategories"]</option>
+                        @foreach (var category in (List<CategoryDto>)ViewBag.Categories)
+                        {
+                            <option value="@category.Id" selected="@(ViewBag.CategoryId?.ToString() == category.Id.ToString())">@category.Name</option>
                         }
                     </select>
                 </div>
@@ -35,8 +52,9 @@
         <thead>
             <tr>
                 <th>@L["Title"]</th>
-                <th>
-                    <a asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-sorting="@(ViewBag.Sorting == "VoteCount desc" ? "VoteCount asc" : "VoteCount desc")">
+                <th>@L["Categories"]</th>
+                <th class="text-center">
+                    <a asp-action="Index" asp-route-status="@ViewBag.Status" asp-route-categoryId="@ViewBag.CategoryId" asp-route-sorting="@(ViewBag.Sorting == "VoteCount desc" ? "VoteCount asc" : "VoteCount desc")">
                         @L["VoteCount"]
                         @if (ViewBag.Sorting == "VoteCount desc")
                         {
@@ -49,20 +67,26 @@
                     </a>
                 </th>
                 <th>@L["Status"]</th>
-                <th></th>
+                <th>@L["Details"]</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var request in Model)
             {
                 <tr>
-                    <td>@item.Title</td>
-                    <td>@item.VoteCount</td>
+                    <td><strong>@request.Title</strong></td>
                     <td>
-                        <span class="badge bg-secondary">@item.Status</span>
+                        @foreach (var categoryName in request.CategoryNames)
+                        {
+                            <span class="badge bg-secondary me-1">@categoryName</span>
+                        }
+                    </td>
+                    <td class="text-center">@request.VoteCount</td>
+                    <td>
+                        <span class="badge bg-secondary">@request.Status</span>
                     </td>
                     <td>
-                        <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-sm btn-info">@L["Details"]</a>
+                        <a asp-action="Detail" asp-route-id="@request.Id" class="btn btn-sm btn-info">@L["Details"]</a>
                     </td>
                 </tr>
             }

@@ -12,9 +12,15 @@
         <div class="col-md-8">
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
                         <h1 class="card-title">@Model.Title</h1>
                         <span class="badge bg-info p-2">@Model.Status</span>
+                    </div>
+                    <div class="mb-3">
+                        @foreach (var categoryName in Model.CategoryNames)
+                        {
+                            <span class="badge bg-secondary me-1">@categoryName</span>
+                        }
                     </div>
                     <p class="card-text lead">@Model.Description</p>
                     <hr />

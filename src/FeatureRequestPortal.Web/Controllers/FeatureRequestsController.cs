@@ -17,27 +17,33 @@ public class FeatureRequestsController : AbpController
         _featureRequestAppService = featureRequestAppService;
     }
 
-    public async Task<IActionResult> Index(FeatureRequestStatus? status, string sorting)
+    public async Task<IActionResult> Index(FeatureRequestStatus? status, Guid? categoryId, string sorting)
     {
         var input = new FeatureRequestGetListInput
         {
             Status = status,
+            CategoryId = categoryId,
             Sorting = sorting,
-            MaxResultCount = 15, // As per requirements
-            SkipCount = 0 // Will add pagination logic later
+            MaxResultCount = 15,
+            SkipCount = 0
         };
 
         var result = await _featureRequestAppService.GetListAsync(input);
+        var categories = await _featureRequestAppService.GetCategoriesAsync();
 
         ViewBag.Status = status;
+        ViewBag.CategoryId = categoryId;
         ViewBag.Sorting = sorting;
+        ViewBag.Categories = categories;
 
         return View(result.Items);
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        var categories = await _featureRequestAppService.GetCategoriesAsync();
+        ViewBag.Categories = categories;
         return View();
     }
 
@@ -47,6 +53,8 @@ public class FeatureRequestsController : AbpController
     {
         if (!ModelState.IsValid)
         {
+            var categories = await _featureRequestAppService.GetCategoriesAsync();
+            ViewBag.Categories = categories;
             return View(input);
         }
 

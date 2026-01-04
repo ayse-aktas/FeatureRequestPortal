@@ -1,4 +1,6 @@
 using System;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -20,4 +22,6 @@ public interface IFeatureRequestAppService : IApplicationService
     Task VoteAsync(Guid id);
 
     Task<CommentDto> CreateCommentAsync(CreateCommentDto input);
+
+    Task<List<CategoryDto>> GetCategoriesAsync();
 }

@@ -12,13 +12,15 @@ public class FeatureRequest : FullAuditedAggregateRoot<Guid>
     public FeatureRequestStatus Status { get; set; }
     public int VoteCount { get; set; }
 
-    public ICollection<Vote> Votes { get; set; }
-    public ICollection<Comment> Comments { get; set; }
+    public virtual ICollection<Vote> Votes { get; protected set; }
+    public virtual ICollection<Comment> Comments { get; protected set; }
+    public virtual ICollection<Category> Categories { get; protected set; }
 
-    public FeatureRequest()
+    protected FeatureRequest()
     {
         Votes = new Collection<Vote>();
         Comments = new Collection<Comment>();
+        Categories = new Collection<Category>();
     }
 
     public FeatureRequest(

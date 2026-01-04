@@ -47,6 +47,10 @@
     "Details": "Detaylar",
     "Create": "Oluştur",
     "Cancel": "İptal",
+    "AllCategories": "Tüm Kategoriler",
+    "Categories": "Kategoriler",
+    "SelectMultipleCategoriesHint": "Birden fazla seçmek için Ctrl tuşuna basılı tutun.",
+    "LoginToCreateRequest": "Talebe girmek için giriş yapmalısınız.",
     "Description": "Açıklama",
     "EnterTitle": "Başlık giriniz...",
     "EnterDescription": "Açıklama giriniz..."

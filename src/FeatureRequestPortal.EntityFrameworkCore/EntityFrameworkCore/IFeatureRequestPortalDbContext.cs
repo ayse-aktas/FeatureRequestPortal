@@ -8,7 +8,8 @@ namespace FeatureRequestPortal.EntityFrameworkCore;
 [ConnectionStringName("Default")]
 public interface IFeatureRequestPortalDbContext : IEfCoreDbContext
 {
-    DbSet<FeatureRequest> FeatureRequests { get; set; }
-    DbSet<Vote> Votes { get; set; }
-    DbSet<Comment> Comments { get; set; }
+    DbSet<FeatureRequest> FeatureRequests { get; }
+    DbSet<Vote> Votes { get; }
+    DbSet<Comment> Comments { get; }
+    DbSet<Category> Categories { get; }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FeatureRequestPortal.FeatureRequests;
@@ -9,6 +11,8 @@ public class CreateFeatureRequestDto
     public string Title { get; set; }
 
     [Required]
-    [MaxLength(2000)]
+    [StringLength(2000)]
     public string Description { get; set; }
+
+    public List<Guid> CategoryIds { get; set; }
 }

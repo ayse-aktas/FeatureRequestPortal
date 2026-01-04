@@ -1,0 +1,14 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FeatureRequestPortal.Domain.Shared -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain.Shared\bin\Debug\net10.0\FeatureRequestPortal.Domain.Shared.dll
+  FeatureRequestPortal.Domain -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain\bin\Debug\net10.0\FeatureRequestPortal.Domain.dll
+  FeatureRequestPortal.Application.Contracts -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application.Contracts\bin\Debug\net10.0\FeatureRequestPortal.Application.Contracts.dll
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application\FeatureRequestPortalApplicationAutoMapperProfile.cs(11,93): error CS1061: 'ICollection<Category>' does not contain a definition for 'Select' and no accessible extension method 'Select' accepting a first argument of type 'ICollection<Category>' could be found (are you missing a using directive or an assembly reference?) [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application\FeatureRequestPortal.Application.csproj]
+
+Build FAILED.
+
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application\FeatureRequestPortalApplicationAutoMapperProfile.cs(11,93): error CS1061: 'ICollection<Category>' does not contain a definition for 'Select' and no accessible extension method 'Select' accepting a first argument of type 'ICollection<Category>' could be found (are you missing a using directive or an assembly reference?) [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application\FeatureRequestPortal.Application.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.57

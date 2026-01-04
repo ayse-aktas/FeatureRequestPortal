@@ -17,22 +17,27 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
     private readonly IRepository<Vote, Guid> _voteRepository;
     private readonly IRepository<Comment, Guid> _commentRepository;
     private readonly IIdentityUserRepository _userRepository;
+    private readonly IRepository<Category, Guid> _categoryRepository;
 
     public FeatureRequestAppService(
         IRepository<FeatureRequest, Guid> featureRequestRepository,
         IRepository<Vote, Guid> voteRepository,
         IRepository<Comment, Guid> commentRepository,
-        IIdentityUserRepository userRepository)
+        IIdentityUserRepository userRepository,
+        IRepository<Category, Guid> categoryRepository)
     {
         _featureRequestRepository = featureRequestRepository;
         _voteRepository = voteRepository;
         _commentRepository = commentRepository;
         _userRepository = userRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<FeatureRequestDto> GetAsync(Guid id)
     {
         var featureRequest = await _featureRequestRepository.GetAsync(id);
+        await _featureRequestRepository.EnsureCollectionLoadedAsync(featureRequest, x => x.Categories);
+        
         var dto = ObjectMapper.Map<FeatureRequest, FeatureRequestDto>(featureRequest);
         
         // Fill creator names for comments
@@ -50,10 +55,11 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
 
     public async Task<PagedResultDto<FeatureRequestDto>> GetListAsync(FeatureRequestGetListInput input)
     {
-        var queryable = await _featureRequestRepository.GetQueryableAsync();
+        var queryable = await _featureRequestRepository.WithDetailsAsync(x => x.Categories);
 
         queryable = queryable
-            .WhereIf(input.Status.HasValue, x => x.Status == input.Status!.Value);
+            .WhereIf(input.Status.HasValue, x => x.Status == input.Status!.Value)
+            .WhereIf(input.CategoryId.HasValue, x => x.Categories.Any(c => c.Id == input.CategoryId!.Value));
 
         var totalCount = await AsyncExecuter.CountAsync(queryable);
 
@@ -77,6 +83,15 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
             input.Title,
             input.Description
         );
+
+        if (input.CategoryIds != null && input.CategoryIds.Any())
+        {
+            var categories = await _categoryRepository.GetListAsync(x => input.CategoryIds.Contains(x.Id));
+            foreach (var category in categories)
+            {
+                featureRequest.Categories.Add(category);
+            }
+        }
 
         await _featureRequestRepository.InsertAsync(featureRequest);
 
@@ -132,5 +147,11 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
         dto.CreatorName = user?.UserName ?? "Unknown";
 
         return dto;
+    }
+
+    public async Task<List<CategoryDto>> GetCategoriesAsync()
+    {
+        var categories = await _categoryRepository.GetListAsync();
+        return ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories);
     }
 }
