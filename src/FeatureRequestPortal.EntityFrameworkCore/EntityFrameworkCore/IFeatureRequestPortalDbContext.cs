@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
+using FeatureRequestPortal.FeatureRequests;
 
-namespace FeatureRequestPortal.FeatureRequests;
+namespace FeatureRequestPortal.EntityFrameworkCore;
 
 [ConnectionStringName("Default")]
 public interface IFeatureRequestPortalDbContext : IEfCoreDbContext

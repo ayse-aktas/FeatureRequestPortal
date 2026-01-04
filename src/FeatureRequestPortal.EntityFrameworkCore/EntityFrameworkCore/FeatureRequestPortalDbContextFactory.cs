@@ -17,7 +17,7 @@ public class FeatureRequestPortalDbContextFactory : IDesignTimeDbContextFactory<
         FeatureRequestPortalEfCoreEntityExtensionMappings.Configure();
 
         var builder = new DbContextOptionsBuilder<FeatureRequestPortalDbContext>()
-            .UseSqlite(configuration.GetConnectionString("Default"));
+            .UseNpgsql(configuration.GetConnectionString("Default"));
         
         return new FeatureRequestPortalDbContext(builder.Options);
     }
