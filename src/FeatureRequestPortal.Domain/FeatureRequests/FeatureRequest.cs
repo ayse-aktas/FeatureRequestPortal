@@ -35,5 +35,6 @@ public class FeatureRequest : FullAuditedAggregateRoot<Guid>
         VoteCount = 0;
         Votes = new Collection<Vote>();
         Comments = new Collection<Comment>();
+        Categories = new Collection<Category>();
     }
 }
