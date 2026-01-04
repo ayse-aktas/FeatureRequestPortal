@@ -29,9 +29,19 @@ public class FeatureRequestPortalMenuContributor : IMenuContributor
             new ApplicationMenuItem(
                 FeatureRequestPortalMenus.Home,
                 l["Menu:Home"],
-                "~/",
+                "~/FeatureRequests",
                 icon: "fa fa-home",
                 order: 1
+            )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "FeatureRequests",
+                l["FeatureRequests"],
+                url: "/FeatureRequests",
+                icon: "fa fa-list",
+                order: 2
             )
         );
 
