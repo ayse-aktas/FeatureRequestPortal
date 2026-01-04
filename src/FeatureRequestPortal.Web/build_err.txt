@@ -1,0 +1,24 @@
+  Determining projects to restore...
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: Microsoft.EntityFrameworkCore.InMemory 10.0.0, Microsoft.EntityFrameworkCore.InMemory 10.0.0.
+  All projects are up-to-date for restore.
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: Microsoft.EntityFrameworkCore.InMemory 10.0.0, Microsoft.EntityFrameworkCore.InMemory 10.0.0.
+  FeatureRequestPortal.Domain.Shared -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain.Shared\bin\Debug\net10.0\FeatureRequestPortal.Domain.Shared.dll
+  FeatureRequestPortal.Domain -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain\bin\Debug\net10.0\FeatureRequestPortal.Domain.dll
+  FeatureRequestPortal.Application.Contracts -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application.Contracts\bin\Debug\net10.0\FeatureRequestPortal.Application.Contracts.dll
+  FeatureRequestPortal.EntityFrameworkCore -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.EntityFrameworkCore\bin\Debug\net10.0\FeatureRequestPortal.EntityFrameworkCore.dll
+  FeatureRequestPortal.Application -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application\bin\Debug\net10.0\FeatureRequestPortal.Application.dll
+  FeatureRequestPortal.HttpApi -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.HttpApi\bin\Debug\net10.0\FeatureRequestPortal.HttpApi.dll
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\Menus\FeatureRequestPortalMenuContributor.cs(62,13): warning CS0162: Unreachable code detected [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj]
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\Views\FeatureRequests\Detail.cshtml(32,22): warning CS8602: Dereference of a possibly null reference. [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj]
+  FeatureRequestPortal.Web -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\bin\Debug\net10.0\FeatureRequestPortal.Web.dll
+
+Build succeeded.
+
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: Microsoft.EntityFrameworkCore.InMemory 10.0.0, Microsoft.EntityFrameworkCore.InMemory 10.0.0.
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: Microsoft.EntityFrameworkCore.InMemory 10.0.0, Microsoft.EntityFrameworkCore.InMemory 10.0.0.
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\Menus\FeatureRequestPortalMenuContributor.cs(62,13): warning CS0162: Unreachable code detected [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj]
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\Views\FeatureRequests\Detail.cshtml(32,22): warning CS8602: Dereference of a possibly null reference. [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Web\FeatureRequestPortal.Web.csproj]
+    4 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:05.04

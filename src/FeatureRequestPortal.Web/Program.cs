@@ -12,6 +12,8 @@ public class Program
 {
     public async static Task<int> Main(string[] args)
     {
+        System.AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Async(c => c.File("Logs/logs.txt"))
             .WriteTo.Async(c => c.Console())

@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using FeatureRequestPortal.FeatureRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc.UI.Alerts;
 
 namespace FeatureRequestPortal.Web.Controllers;
 
@@ -63,16 +65,8 @@ public class FeatureRequestsController : AbpController
     [Authorize]
     public async Task<IActionResult> Vote(Guid id)
     {
-        try
-        {
-            await _featureRequestAppService.VoteAsync(id);
-            return RedirectToAction("Detail", new { id });
-        }
-        catch (Volo.Abp.UserFriendlyException ex)
-        {
-            Alerts.Warning(ex.Message);
-            return RedirectToAction("Detail", new { id });
-        }
+        await _featureRequestAppService.VoteAsync(id);
+        return RedirectToAction("Detail", new { id });
     }
 
     [HttpPost]
