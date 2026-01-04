@@ -37,6 +37,7 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
     {
         var featureRequest = await _featureRequestRepository.GetAsync(id);
         await _featureRequestRepository.EnsureCollectionLoadedAsync(featureRequest, x => x.Categories);
+        await _featureRequestRepository.EnsureCollectionLoadedAsync(featureRequest, x => x.Comments);
         
         var dto = ObjectMapper.Map<FeatureRequest, FeatureRequestDto>(featureRequest);
         

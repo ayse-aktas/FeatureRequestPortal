@@ -91,8 +91,8 @@ public class FeatureRequestPortalDbContext :
         {
             b.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "FeatureRequests", FeatureRequestPortalConsts.DbSchema);
             b.ConfigureByConvention(); 
-            b.Property(x => x.Title).IsRequired().HasMaxLength(128);
-            b.Property(x => x.Description).IsRequired();
+            b.Property(x => x.Title).IsRequired().HasMaxLength(200);
+            b.Property(x => x.Description).IsRequired().HasMaxLength(2000);
 
             b.HasMany(x => x.Votes).WithOne().HasForeignKey(x => x.FeatureRequestId).IsRequired();
             b.HasMany(x => x.Comments).WithOne().HasForeignKey(x => x.FeatureRequestId).IsRequired();
