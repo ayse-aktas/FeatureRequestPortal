@@ -14,6 +14,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using FeatureRequestPortal.FeatureRequests;
 
 namespace FeatureRequestPortal.EntityFrameworkCore;
 
@@ -23,8 +24,12 @@ namespace FeatureRequestPortal.EntityFrameworkCore;
 public class FeatureRequestPortalDbContext :
     AbpDbContext<FeatureRequestPortalDbContext>,
     ITenantManagementDbContext,
-    IIdentityDbContext
+    IIdentityDbContext,
+    IFeatureRequestPortalDbContext
 {
+    public DbSet<FeatureRequest> FeatureRequests { get; set; }
+    public DbSet<Vote> Votes { get; set; }
+    public DbSet<Comment> Comments { get; set; }
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
 
@@ -81,11 +86,30 @@ public class FeatureRequestPortalDbContext :
         
         /* Configure your own tables/entities inside here */
 
-        //builder.Entity<YourEntity>(b =>
-        //{
-        //    b.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "YourEntities", FeatureRequestPortalConsts.DbSchema);
-        //    b.ConfigureByConvention(); //auto configure for the base class props
-        //    //...
-        //});
+        builder.Entity<FeatureRequest>(b =>
+        {
+            b.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "FeatureRequests", FeatureRequestPortalConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            b.Property(x => x.Title).IsRequired().HasMaxLength(200);
+            b.Property(x => x.Description).IsRequired().HasMaxLength(2000);
+            b.Property(x => x.Status).IsRequired().HasDefaultValue(FeatureRequestStatus.Pending);
+            b.Property(x => x.VoteCount).IsRequired().HasDefaultValue(0);
+
+            b.HasMany(x => x.Votes).WithOne().HasForeignKey(x => x.FeatureRequestId).IsRequired();
+            b.HasMany(x => x.Comments).WithOne().HasForeignKey(x => x.FeatureRequestId).IsRequired();
+        });
+
+        builder.Entity<Vote>(b =>
+        {
+            b.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "Votes", FeatureRequestPortalConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
+
+        builder.Entity<Comment>(b =>
+        {
+            b.ToTable(FeatureRequestPortalConsts.DbTablePrefix + "Comments", FeatureRequestPortalConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Text).IsRequired().HasMaxLength(2000);
+        });
     }
 }
