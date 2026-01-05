@@ -1,58 +1,89 @@
-﻿# FeatureRequestPortal
+﻿# Feature Request Portal
 
-## About this solution
+Bu proje, kullanıcıların (müşterilerin) yeni özellik taleplerini iletebildiği, bu talepleri oylayabildiği ve adminlerin süreci yönetebildiği bir portal uygulamasıdır.
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. Check the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application) documentation for more info.
+### Örnek Senaryo
+Bir araba firması, yeni modelinde hangi özelliklerin olmasını istediğini müşterilerine sorar (Örn: "Güneş panelli tavan", "Otonom sürüş asistanı"). Müşteriler en çok istedikleri özellikleri oylar, firma ise en yüksek oy alanları üretim planına dahil eder.
 
-### Pre-requirements
+---
 
-* [.NET10.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v18 or 20](https://nodejs.org/en)
+### Kurulum ve Çalıştırma
 
-### Configurations
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları sırayla uygulayın:
 
-The solution comes with a default configuration that works out of the box. However, you may consider to change the following configuration before running your solution:
+#### Gereksinimler
+*   **.NET 9.0+ SDK**
+*   **Node.js v20.11+**
+*   **ABP CLI:** `dotnet tool install -g Volo.Abp.Studio.Cli` (Yüklü değilse)
+*   **PostgreSQL:** Veritabanı sunucusu olarak gereklidir.
 
-* Check the `ConnectionStrings` in `appsettings.json` files under the `FeatureRequestPortal.Web` and `FeatureRequestPortal.DbMigrator` projects and change it if you need.
-
-### Before running the application
-
-* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `FeatureRequestPortal.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
-
-#### Generating a Signing Certificate
-
-In the production environment, you need to use a production signing certificate. ABP Framework sets up signing and encryption certificates in your application and expects an `openiddict.pfx` file in your application.
-
-To generate a signing certificate, you can use the following command:
-
+#### Adım 1: Projeyi Klonlayın
+Öncelikle projeyi bilgisayarınıza indirin:
 ```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p c3581bf5-8d84-4a11-bc59-c788bfa323b7
+git clone https://github.com/ayse-aktas/FeatureRequestPortal
+cd FeatureRequestPortal
 ```
 
-> `c3581bf5-8d84-4a11-bc59-c788bfa323b7` is the password of the certificate, you can change it to any password you want.
+#### Adım 2: Bağımlılıkları Yükleyin (Client-Side)
+Temel kütüphanelerin yüklendiğinden emin olmak için çözüm dizininde şu komutu çalıştırın:
+```bash
+abp install-libs
+```
 
-It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
+#### Adım 3: Veritabanı Hazırlığı (Migrations & Seed)
+Veritabanı tablolarının oluşması ve başlangıç verilerinin (Admin yetkileri, Kategoriler) yüklenmesi için `DbMigrator` projesini çalıştırın:
+```bash
+cd src/FeatureRequestPortal.DbMigrator
+dotnet run
+```
 
-For more information, please refer to: [OpenIddict Certificate Configuration](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
+#### Adım 4: Uygulamayı Başlatma
+Veritabanı hazırlandıktan sonra ana web arayüzünü başlatın:
+```bash
+cd ../FeatureRequestPortal.Web
+dotnet run
+```
+Uygulama ayağa kalktığında terminalde yazan adresten (genellikle `https://localhost:44359`) tarayıcı ile erişebilirsiniz.
 
-> Also, see the [Configuring OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) documentation for more information.
+---
 
-### Solution structure
+### Ekran Görüntüleri
+Burada uygulamanın temel işlevlerini adım adım görebilirsiniz:
 
-This is a layered monolith application that consists of the following applications:
+*   **Ana Sayfa (Talep Listesi):** Tüm taleplerin listelendiği, oyların ve durumların görüldüğü ekran.
+    ![Ana Sayfa](docs/images/1_ana_sayfa.png)
+*   **Talep Detay ve Oylama:** Bir talebin içine girildiğinde oylama ve yorum yapma alanı.
+    ![Talep Detay](docs/images/2_detay_sayfasi.png)
+*   **Yeni Talep Oluşturma:** Kullanıcıların yeni bir fikir ilettiği form.
+    ![Yeni Talep](docs/images/3_yeni_talep.png)
+*   **Admin Paneli (Durum Güncelleme):** Adminlerin talebi "Onaylandı" veya "Planlandı" gibi statülere çektiği alan.
+    ![Admin Yönetim](docs/images/4_admin_yonetim.png)
 
-* `FeatureRequestPortal.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
-* `FeatureRequestPortal.Web`: ASP.NET Core MVC / Razor Pages application that is the essential web application of the solution.
+---
 
+### Mimari Yapı ve Varsayımlar
+Proje, ABP Framework standartlarına uygun olarak Domain Driven Design (DDD) mimarisiyle geliştirilmiştir:
 
-## Deploying the application
+*   **Katmanlı Mimari:** Domain, Application, Web ve EntityFrameworkCore katmanları birbirinden izole edilmiştir.
+*   **Entity Yapısı:** `FeatureRequest` ana entity (AggregateRoot), `Vote` ve `Comment` ise ona bağlı çocuk (Child) entity’ler olarak kurgulanmıştır.
+*   **Oylama Mantığı:** +1/-1 bir model uygulanmıştır. Bir kullanıcı her talebe sadece bir kez oy verebilir.
+*   **Yetkilendirme:** ABP'nin yerleşik Permission sistemi kullanılarak Admin ve Normal Kullanıcı yetkileri ayrılmıştır.
+*   **Kategoriler:** Taleplerin birden fazla kategoriye sahip olabileceği (Many-to-Many) varsayılarak dinamik bir filtreleme yapısı kurulmuştur.
 
-Deploying an ABP application follows the same process as deploying any .NET or ASP.NET Core application. However, there are important considerations to keep in mind. For detailed guidance, refer to ABP's [deployment documentation](https://abp.io/docs/latest/Deployment/Index).
+---
 
-### Additional resources
+### Zorlandığım Noktalar
+*   **ABP Modüler Yapısı:** Projenin çok fazla katmana bölünmüş olması başlangıçta sorumlulukları ayırt etmemi zorlaştırdı. Hangi kodun hangi projede (Domain mi, Application mı?) olması gerektiğini dokümanları ve örnekleri inceleyerek kavradım.
+*   **MVC Controller Kısalığı:** Alışık olduğum MVC yapısında Controller'lar daha kalabalıktır. ABP'de iş mantığının AppService katmanına aktarılması ve Controller'ın sadece AbpControllerBase'den kalıtım alarak bu kadar sadeleşmesi başta kafa karıştırıcı olsa da sonradan çok mantıklı geldi.
+*   **Yetki Yönetimi:** PermissionDefinitionProvider ve DataSeed mantığını kullanarak veritabanı seviyesinde otomatik yetki atamayı kurgulamak öğretici bir süreçti.
 
-You can see the following resources to learn more about your solution and the ABP Framework:
+---
 
-* [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-1)
-* [Application Startup Template](https://abp.io/docs/latest/startup-templates/application/index)
+### Öğrendiklerim
+*   **Profesyonel Proje Yapısı:** Kurumsal seviyede bir projenin nasıl katmanlara ayrıldığını ve bağımlılıkların (Dependency Injection) nasıl yönetildiğini öğrendim.
+
+*   **ABP Framework Standartları:** Localization, Soft-Delete ve Audit Logging gibi yerleşik yetenekleri kullanarak, kurumsal bir framework'ün sunduğu hazır çözümlerle geliştirme süreçlerini optimize etmeyi ve standartlara uyum sağlamayı öğrendim.
+
+*   **EF Core Mapping:** Fluent API kullanarak karmaşık veritabanı ilişkilerini (M-to-M, 1-to-N) ABP standartlarında tanımlamayı öğrendim.
+
+*   **Temiz Kod (Clean Code):** İş mantığını Controller'dan ayırıp Service katmanına taşımanın kodun okunabilirliğini ne kadar artırdığını gördüm.
