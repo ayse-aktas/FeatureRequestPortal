@@ -1,0 +1,13 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FeatureRequestPortal.Domain.Shared -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain.Shared\bin\Debug\net10.0\FeatureRequestPortal.Domain.Shared.dll
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain\Data\FeatureRequestPermissionDataSeedContributor.cs(2,28): error CS0234: The type or namespace name 'Permissions' does not exist in the namespace 'FeatureRequestPortal' (are you missing an assembly reference?) [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain\FeatureRequestPortal.Domain.csproj]
+  FeatureRequestPortal.Application.Contracts -> D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Application.Contracts\bin\Debug\net10.0\FeatureRequestPortal.Application.Contracts.dll
+
+Build FAILED.
+
+D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain\Data\FeatureRequestPermissionDataSeedContributor.cs(2,28): error CS0234: The type or namespace name 'Permissions' does not exist in the namespace 'FeatureRequestPortal' (are you missing an assembly reference?) [D:\Proje\FeatureRequestApp\src\FeatureRequestPortal.Domain\FeatureRequestPortal.Domain.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.49

@@ -13,4 +13,5 @@ public class FeatureRequestDto : FullAuditedEntityDto<Guid>
     public List<CommentDto> Comments { get; set; }
     public List<string> CategoryNames { get; set; }
     public int CurrentUserVote { get; set; } // 1, -1 or 0
+    public string CreatorName { get; set; }
 }

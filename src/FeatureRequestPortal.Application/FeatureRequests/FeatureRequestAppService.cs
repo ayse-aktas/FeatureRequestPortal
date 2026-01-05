@@ -42,6 +42,13 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
         
         var dto = ObjectMapper.Map<FeatureRequest, FeatureRequestDto>(featureRequest);
         
+        // Fill creator name for Feature Request
+        if (dto.CreatorId.HasValue)
+        {
+            var user = await _userRepository.FindAsync(dto.CreatorId.Value);
+            dto.CreatorName = user?.UserName ?? "Unknown";
+        }
+
         // Fill creator names for comments
         foreach (var comment in dto.Comments)
         {
@@ -78,9 +85,35 @@ public class FeatureRequestAppService : ApplicationService, IFeatureRequestAppSe
                 .PageBy(input.SkipCount, input.MaxResultCount)
         );
 
+        var dtos = ObjectMapper.Map<List<FeatureRequest>, List<FeatureRequestDto>>(featureRequests);
+
+        // Populate CreatorNames
+        var userIds = dtos.Where(x => x.CreatorId.HasValue).Select(x => x.CreatorId!.Value).Distinct().ToList();
+        var users = new Dictionary<Guid, string>();
+        foreach (var userId in userIds)
+        {
+            var user = await _userRepository.FindAsync(userId);
+            if (user != null)
+            {
+                users[userId] = user.UserName;
+            }
+        }
+
+        foreach (var dto in dtos)
+        {
+            if (dto.CreatorId.HasValue && users.ContainsKey(dto.CreatorId.Value))
+            {
+                dto.CreatorName = users[dto.CreatorId.Value];
+            }
+            else
+            {
+                dto.CreatorName = "Unknown";
+            }
+        }
+
         return new PagedResultDto<FeatureRequestDto>(
             totalCount,
-            ObjectMapper.Map<List<FeatureRequest>, List<FeatureRequestDto>>(featureRequests)
+            dtos
         );
     }
 
