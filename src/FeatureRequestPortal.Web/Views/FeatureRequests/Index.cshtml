@@ -93,6 +93,48 @@
         </tbody>
     </table>
 
-    @* Simple pagination could be added here if we had total count in the model, 
-       but for now we focus on the core listing. *@
+    @{
+        var currentPage = (int)ViewBag.CurrentPage;
+        var totalCount = (long)ViewBag.TotalCount;
+        var pageSize = (int)ViewBag.PageSize;
+        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+    }
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" 
+                       asp-route-status="@ViewBag.Status" 
+                       asp-route-categoryId="@ViewBag.CategoryId" 
+                       asp-route-sorting="@ViewBag.Sorting" 
+                       asp-route-page="@(currentPage - 1)">
+                        @L["Previous"]
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(currentPage == i ? "active" : "")">
+                        <a class="page-link" asp-action="Index" 
+                           asp-route-status="@ViewBag.Status" 
+                           asp-route-categoryId="@ViewBag.CategoryId" 
+                           asp-route-sorting="@ViewBag.Sorting" 
+                           asp-route-page="@i">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" 
+                       asp-route-status="@ViewBag.Status" 
+                       asp-route-categoryId="@ViewBag.CategoryId" 
+                       asp-route-sorting="@ViewBag.Sorting" 
+                       asp-route-page="@(currentPage + 1)">
+                        @L["Next"]
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
 </div>

@@ -18,15 +18,16 @@ public class FeatureRequestsController : AbpController
         _featureRequestAppService = featureRequestAppService;
     }
 
-    public async Task<IActionResult> Index(FeatureRequestStatus? status, Guid? categoryId, string sorting)
+    public async Task<IActionResult> Index(FeatureRequestStatus? status, Guid? categoryId, string sorting, int page = 1)
     {
+        var pageSize = 15;
         var input = new FeatureRequestGetListInput
         {
             Status = status,
             CategoryId = categoryId,
             Sorting = sorting,
-            MaxResultCount = 15,
-            SkipCount = 0
+            MaxResultCount = pageSize,
+            SkipCount = (page - 1) * pageSize
         };
 
         var result = await _featureRequestAppService.GetListAsync(input);
@@ -36,6 +37,10 @@ public class FeatureRequestsController : AbpController
         ViewBag.CategoryId = categoryId;
         ViewBag.Sorting = sorting;
         ViewBag.Categories = categories;
+        
+        ViewBag.CurrentPage = page;
+        ViewBag.TotalCount = result.TotalCount;
+        ViewBag.PageSize = pageSize;
 
         return View(result.Items);
     }

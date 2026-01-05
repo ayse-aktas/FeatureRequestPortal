@@ -56,6 +56,8 @@
     "LoginToCreateRequest": "Talebe girmek için giriş yapmalısınız.",
     "Description": "Açıklama",
     "EnterTitle": "Başlık giriniz...",
-    "EnterDescription": "Açıklama giriniz..."
+    "EnterDescription": "Açıklama giriniz...",
+    "Previous": "Geri",
+    "Next": "İleri"
   }
 }
