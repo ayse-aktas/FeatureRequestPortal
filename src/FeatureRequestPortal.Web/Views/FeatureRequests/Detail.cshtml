@@ -99,7 +99,7 @@
                         }
                     </ul>
 
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated == true)
                     {
                         <form asp-action="AddComment" method="post">
                             <input type="hidden" name="FeatureRequestId" value="@Model.Id" />

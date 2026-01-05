@@ -57,10 +57,10 @@ public class FeatureRequestPortalMenuContributor : IMenuContributor
         {
             administration.SetSubItemOrder(TenantManagementMenuNames.GroupName, 1);
         }
-        else
+        /* else 
         {
             administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
-        }
+        } */
         
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
 
