@@ -12,10 +12,10 @@ Bir araba firması, yeni modelinde hangi özelliklerin olmasını istediğini m�
 Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları sırayla uygulayın:
 
 #### Gereksinimler
-*   **.NET 9.0+ SDK**
-*   **Node.js v20.11+**
-*   **ABP CLI:** `dotnet tool install -g Volo.Abp.Studio.Cli` (Yüklü değilse)
-*   **PostgreSQL:** Veritabanı sunucusu olarak gereklidir.
+*   **.NET 10.0+ SDK**
+*   **PostgreSQL** (Veritabanı sunucusu olarak gereklidir)
+*   **Node.js** (UI kütüphaneleri için)
+*   **ABP CLI:** `dotnet tool install -g Volo.Abp.Studio.Cli`
 
 #### Adım 1: Projeyi Klonlayın
 Öncelikle projeyi bilgisayarınıza indirin:
@@ -24,26 +24,40 @@ git clone https://github.com/ayse-aktas/FeatureRequestPortal
 cd FeatureRequestPortal
 ```
 
-#### Adım 2: Bağımlılıkları Yükleyin (Client-Side)
-Temel kütüphanelerin yüklendiğinden emin olmak için çözüm dizininde şu komutu çalıştırın:
-```bash
-abp install-libs
+#### Adım 2: Veritabanı Ayarları
+`src/FeatureRequestPortal.Web/appsettings.json` dosyasını açın ve `ConnectionStrings` bölümünü kendi veritabanı sunucunuza göre düzenleyin.
+```json
+"ConnectionStrings": {
+    "Default": "Server=localhost;Port=5432;Database=FeatureRequestPortal;User Id=postgres;Password=your_password;"
+}
 ```
 
-#### Adım 3: Veritabanı Hazırlığı (Migrations & Seed)
-Veritabanı tablolarının oluşması ve başlangıç verilerinin (Admin yetkileri, Kategoriler) yüklenmesi için `DbMigrator` projesini çalıştırın:
+#### Adım 3: Veritabanını Oluşturma (Migration & Seed)
+ABP'nin migration aracı olan `DbMigrator` projesini çalıştırın. Bu işlem veritabanını oluşturacak ve başlangıç verilerini (Admin yetkileri, Kategoriler vb.) ekleyecektir.
+*   Terminalden şu dizine gidin ve çalıştırın:
 ```bash
 cd src/FeatureRequestPortal.DbMigrator
 dotnet run
 ```
+*   İşlemler tamamlanınca konsol ekranını kapatabilirsiniz.
 
-#### Adım 4: Uygulamayı Başlatma
-Veritabanı hazırlandıktan sonra ana web arayüzünü başlatın:
+#### Adım 4: Kütüphaneleri Yükleme
+Web projesinin bağımlılıklarını yüklemek için ana dizinde veya web dizininde şu komutu çalıştırın:
 ```bash
-cd ../FeatureRequestPortal.Web
+abp install-libs
+```
+
+#### Adım 5: Uygulamayı Başlatma
+Proje artık hazır. Projeyi çalıştırabilirsiniz.
+```bash
+cd src/FeatureRequestPortal.Web
 dotnet run
 ```
-Uygulama ayağa kalktığında terminalde yazan adresten (genellikle `https://localhost:44359`) tarayıcı ile erişebilirsiniz.
+Uygulama ayağa kalktığında `https://localhost:44359` adresinden erişebilirsiniz.
+
+**Varsayılan Giriş Bilgileri:**
+*   **Kullanıcı Adı:** admin
+*   **Şifre:** 1q2w3E*
 
 ---
 
